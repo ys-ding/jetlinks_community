@@ -2,33 +2,36 @@ spring:
   resources:
     static-locations: file:./index/, file:./static/,/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/, classpath:/public/
   redis:
-    host: 127.0.0.1
+    host: 192.168.205.128
     port: 6379
+    password: 123456
     lettuce:
       pool:
         max-active: 1024
     timeout: 20s
   r2dbc:
-    url: r2dbc:h2:file:///./data/h2db/jetlinks
-    username: sa
-    password:
+    url: r2dbc:mysql://127.0.0.1:3306/jetlinks?ssl=false&serverZoneId=Asia/Shanghai
+    username: root
+    password: root
     pool:
       max-size: 32
   elasticsearch:
-    uris: localhost:9201
+#    uris: localhost:9201
+    uris: localhost:9200
     socket-timeout: 10s
     connection-timeout: 15s
     webclient:
       max-in-memory-size: 100MB
 easyorm:
-  default-schema: PUBLIC # 数据库默认的schema
-  dialect: h2 #数据库方言
+  default-schema: jetlinks # 数据库默认的schema
+  dialect: mysql #数据库方言
 elasticsearch:
   embedded:
     enabled: true # 为true时使用内嵌的elasticsearch,不建议在生产环境中使用
     data-path: ./data/elasticsearch
-    port: 9201
-    host: 0.0.0.0
+#    port: 9201
+    port: 9200
+    host: 127.0.0.1
   index:
     default-strategy: time-by-month #默认es的索引按月进行分表, direct则为直接操作索引.
     settings:
